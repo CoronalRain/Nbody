@@ -9,6 +9,8 @@ Usage:
 Options:
   -n --num <int>       Number of stars.
                        [default: 50]
+  -t --trails          Show star trails?
+  -i --initial         Initial velocities?
   -m --ms <int>        Milliseconds between frames in the animation.
                        [default: 10]
   -c --cmap <string>   Colormap to use for star luminosity.
@@ -24,11 +26,13 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 class Cluster():
-    def __init__(self, n):
+    def __init__(self, n, initial):
         self.stars = np.empty(n, dtype=object)
         for i in range(n):
             pos = np.array([np.random.randn(), np.random.randn()])*4.2e16
             vel = np.array([0, 0])
+            if initial:
+                vel = 3e-15*np.array([pos[1], -pos[0]])
             force = np.array([0, 0])
             mass = 2e30*np.random.gamma(1.5,1)
             color = mass
@@ -37,7 +41,7 @@ class Cluster():
             color += np.random.randn()
             self.stars[i] = Star(pos, vel, force, mass, color)
     
-    def update(self, x):
+    def update(self, x, trails):
         for star_a in self.stars:
             star_a.reset_force()
             for star_b in self.stars:
@@ -51,9 +55,11 @@ class Cluster():
         radius = [self.stars[i].radius for i in range(len(self.stars))]
         color = [self.stars[i].color for i in range(len(self.stars))]
         
+        if not trails:
+            self.scat.remove()
         self.scat = self.ax.scatter(pos_x, pos_y, s=radius, c=color, cmap=plt.get_cmap("RdYlBu"))
     
-    def animate(self, ms, cmap):
+    def animate(self, trails, ms, cmap):
         self.fig = plt.figure(figsize=(10,10))
         self.ax = self.fig.add_subplot(111, axisbg="black")
         lim = 1.5e17
@@ -65,7 +71,7 @@ class Cluster():
         color = [self.stars[i].color for i in range(len(self.stars))]
         #lim = max(np.max(np.abs(pos_x)), np.max(np.abs(pos_y)))
         self.scat = self.ax.scatter(pos_x, pos_y, s=radius, c=color, cmap=plt.get_cmap(cmap))
-        self.ani = animation.FuncAnimation(self.fig, self.update, interval=ms, repeat=False)
+        self.ani = animation.FuncAnimation(self.fig, self.update, interval=ms, repeat=False, fargs=[trails])
         plt.show()
 
 
@@ -111,8 +117,10 @@ if __name__ == '__main__':
     arguments = docopt(__doc__, version = "N-body Simulator 1.0")
     
     n = int(arguments["--num"])
+    trails = arguments["--trails"]
+    initial = arguments["--initial"]
     ms = int(arguments["--ms"])
     cmap = arguments["--cmap"]
     
-    cluster = Cluster(n)
-    cluster.animate(ms, cmap)
+    cluster = Cluster(n, initial)
+    cluster.animate(trails, ms, cmap)
