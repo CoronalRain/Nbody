@@ -5,15 +5,15 @@ Usage:
   nbody.py [options]
   nbody.py (-h | --help)
   nbody.py --version
+
 Options:
-  -n --num <int>       Width/Height of the lattice containing the random walk.
-                       [default: 100]
-  -m --ms <int>        Milliseconds between frames in the animation.
+  -n --num <int>       Number of stars.
                        [default: 50]
-  -c --cmap <string>   Colormap to use.
+  -m --ms <int>        Milliseconds between frames in the animation.
+                       [default: 10]
+  -c --cmap <string>   Colormap to use for star luminosity.
                        [default: RdYlBu]
   -h --help            Show this screen.
-  -v --verbose         Show runtime info.
   --version            Show version.
 """
 
@@ -56,7 +56,7 @@ class Cluster():
     def animate(self, ms, cmap):
         self.fig = plt.figure(figsize=(10,10))
         self.ax = self.fig.add_subplot(111, axisbg="black")
-        lim = 2e17
+        lim = 1.5e17
         self.ax.set_xlim([-lim,lim])
         self.ax.set_ylim([-lim,lim])
         pos_x = [self.stars[i].pos[0] for i in range(len(self.stars))]
@@ -76,7 +76,7 @@ class Star():
         self.vel = vel.astype(np.float64)
         self.force = force.astype(np.float64)
         self.mass = float(mass)
-        self.radius = float(mass/1e29)
+        self.radius = float(mass/0.25e29)
         self.color = float(color)
     
     def update(self):
@@ -107,14 +107,12 @@ class Star():
 
 
 
-if __name__ == "__main__":
-    print("Running...")
-    doc_args = docopt(__doc__, version = "N-body Simulator 1.0")
-    print(doc_args)
-    n = int(doc_args["--num"])
-    ms = int(doc_args["--ms"])
-    cmap = doc_args["--cmap"]
-    verbose = doc_args["--verbose"]
+if __name__ == '__main__':
+    arguments = docopt(__doc__, version = "N-body Simulator 1.0")
+    
+    n = int(arguments["--num"])
+    ms = int(arguments["--ms"])
+    cmap = arguments["--cmap"]
     
     cluster = Cluster(n)
     cluster.animate(ms, cmap)
