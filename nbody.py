@@ -32,7 +32,7 @@ class Cluster():
             pos = np.array([np.random.randn(), np.random.randn()])*4.2e16
             vel = np.array([0, 0])
             if initial:
-                vel = 3e-15*np.array([pos[1], -pos[0]])
+                vel = 4e-15*np.array([pos[1], -pos[0]])
             force = np.array([0, 0])
             mass = 2e30*np.random.gamma(1.5,1)
             color = mass
@@ -69,7 +69,6 @@ class Cluster():
         pos_y = [self.stars[i].pos[1] for i in range(len(self.stars))]
         radius = [self.stars[i].radius for i in range(len(self.stars))]
         color = [self.stars[i].color for i in range(len(self.stars))]
-        #lim = max(np.max(np.abs(pos_x)), np.max(np.abs(pos_y)))
         self.scat = self.ax.scatter(pos_x, pos_y, s=radius, c=color, cmap=plt.get_cmap(cmap))
         self.ani = animation.FuncAnimation(self.fig, self.update, interval=ms, repeat=False, fargs=[trails])
         plt.show()
@@ -94,17 +93,16 @@ class Star():
         self.force = np.array([0, 0], dtype=np.float64)
     
     def compute_force(self, other):
-        eps = float(3e4)
+        eps = float(1e16)
         G = float(6.674e-11)
         m1 = float(self.mass)
         m2 = float(other.mass)
         r = float(self.distance(other))
-        if r > 1e16:
-            F = float(-G*m1*m2 / (r**2+eps**2))
-            f_x = float(F * (self.pos[0] - other.pos[0]) / r)
-            f_y = float(F * (self.pos[1] - other.pos[1]) / r)
-            self.force[0] += f_x
-            self.force[1] += f_y
+        F = float(-G*m1*m2 / (r**2+eps**2))
+        f_x = float(F * (self.pos[0] - other.pos[0]) / r)
+        f_y = float(F * (self.pos[1] - other.pos[1]) / r)
+        self.force[0] += f_x
+        self.force[1] += f_y
     
     def distance(self, other):
         return np.sqrt((self.pos[0] - other.pos[0])**2 + (self.pos[1] - other.pos[1])**2)
