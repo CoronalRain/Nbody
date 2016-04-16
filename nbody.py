@@ -28,6 +28,8 @@ import matplotlib.animation as animation
 class Cluster():
     def __init__(self, n, initial):
         self.stars = np.empty(n, dtype=object)
+        self.radius = 1.5e17
+        
         for i in range(n):
             pos = np.array([np.random.randn(), np.random.randn()])*4.2e16
             vel = np.array([0, 0])
@@ -62,9 +64,8 @@ class Cluster():
     def animate(self, trails, ms, cmap):
         self.fig = plt.figure(figsize=(10,10))
         self.ax = self.fig.add_subplot(111, axisbg="black")
-        lim = 1.5e17
-        self.ax.set_xlim([-lim,lim])
-        self.ax.set_ylim([-lim,lim])
+        self.ax.set_xlim([-self.radius,self.radius])
+        self.ax.set_ylim([-self.radius,self.radius])
         pos_x = [self.stars[i].pos[0] for i in range(len(self.stars))]
         pos_y = [self.stars[i].pos[1] for i in range(len(self.stars))]
         radius = [self.stars[i].radius for i in range(len(self.stars))]
