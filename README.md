@@ -1,6 +1,3 @@
-# Nbody
-N-body simulations of the dynamical evolution of stellar clusters and galaxies.
-
 # N-body Simulator
 
 **by Troy P. Kling**
@@ -9,7 +6,7 @@ N-body simulations of the dynamical evolution of stellar clusters and galaxies.
 
 ## Description
 
-
+N-body simulations of the dynamical evolution of stellar clusters and galaxies.
 
 ## Installation
 
