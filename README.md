@@ -2,7 +2,7 @@
 
 **by Troy P. Kling**
 
-<img src="http://troykling.com/files/clusters.png" alt="N-body Simulation" width="308" height="318">
+<img src="http://troykling.com/files/clusters.gif" alt="N-body Simulation" width="308" height="318">
 
 ## Description
 
