@@ -10,28 +10,12 @@ N-body simulations of the dynamical evolution of stellar clusters and galaxies.
 
 ## Installation
 
-Start by ensuring that all dependencies are installed. The N-body Simulator requires the numpy, matplotlib, and docopt packages.
-
-Next, clone this repository.
+First, clone this repository.
 
 > git clone https://gitlab.com/CoronalRain/Nbody.git
 
-Once the repo is successfully cloned, navigate to the Nbody directory and install the package.
+Once the repo is successfully cloned, navigate to the Nbody directory and build the executable by either running the build.sh script or using the command
 
-> python setup.py install
+> pyinstaller nbody.spec
 
-You're now ready to use the Nbody Simulator!
-
-## How to Use
-
-You can interface with the tool in two different ways: through Python and through the terminal/command prompt.
-
-### Python
-
-
-
-### Terminal
-
-The Nbody Simulator can also be used from the terminal/command prompt. In order to see the documentation for this, run the following command.
-
-> python nbody.py --help
+Assuming you have the most recent version of pyinstaller, this should create an executable in the dist folder. You're now ready to use the Nbody Simulator!
